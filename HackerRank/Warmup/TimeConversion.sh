@@ -1,7 +1,7 @@
 #!/bin/bash
 
 pick() {
-	echo "$time" | cut -d : -f $1
+  echo "$time" | cut -d : -f $1
 }
 
 read -r time
@@ -9,7 +9,7 @@ read -r time
 h=$( pick 1 )
 m=$( pick 2 )
 
-s=$( pick 3 ) 
+s=$( pick 3 )
 s=${s:0:2}
 
 period=$( pick 3 )
