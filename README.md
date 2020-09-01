@@ -1,5 +1,4 @@
-# Algorithms
-My personal collection of algorithms and data structures :)
+# Bash Algorithms
 
 ## Categories
 
