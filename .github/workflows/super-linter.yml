@@ -1,25 +1,26 @@
 ---
-###########################
-###########################
-## Linter GitHub Actions ##
-###########################
-###########################
-name: Lint Code Base
-
-#
-# Documentation:
-# https://help.github.com/en/articles/workflow-syntax-for-github-actions
-#
+#########################
+#########################
+## GitHub Super-Linter ##
+#########################
+#########################
+name: Super-Linter
+# https://bit.ly/git-io_workflow-syntax-for-github-actions
 
 #############################
 # Start the job on all push #
 #############################
 on:
   push:
-    # branches-ignore: [main]
-    # uncomment to run only on non-`main` branches
-  pull_request:
-    branches: [main]
+
+#####################################
+# Cancel any in-progress job or run #
+#####################################
+# https://github.com/kdeldycke/workflows/commit/8bee3ba877
+# https://docs.github.com/actions/using-jobs/using-concurrency
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
 
 ###############
 # Set the Job #
@@ -40,13 +41,17 @@ jobs:
       ##########################
       - name: Checkout Code
         uses: actions/checkout@v3
+        with:
+          # Super-Linter requires full repository history for analysis
+          fetch-depth: 0
 
       ################################
       # Run Linter against code base #
       ################################
       - name: Lint Code Base
-        uses: docker://github/super-linter:v3
+        uses: github/super-linter@v4
         env:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: main
+          # Super-Linter requires this variable even if it is unset
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
